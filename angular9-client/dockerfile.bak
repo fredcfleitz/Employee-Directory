@@ -1,0 +1,8 @@
+FROM node:12.17.0-alpine AS builder
+COPY . ./angular9-client
+WORKDIR /angular9-client
+RUN npm i
+RUN $(npm bin)/ng build --prod
+
+FROM nginx:1.15.8-alpine
+COPY --from=builder /angular9-client/dist/angular9-client/ /usr/share/nginx/html
